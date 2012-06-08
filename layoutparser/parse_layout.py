@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from lxml import etree
 import sys
 
@@ -64,12 +65,19 @@ for action,elem in context:
                     onCreate.append("ArrayAdapter<CharSequence> %sAdapter = ArrayAdapter.createFromResource(this ,R.array.#BK, android.R.layout.simple_spinner_dropdown_item);\n" % variableName)
                     onCreate.append("%s.setAdapter(%sAdapter);\n"%(variableName,variableName))
                     onCreate.append("%s.setOnItemSelectedListener(new %sSelectedListener());\n\n" % (variableName, variableName))
-                    onCreate.append("%s.setSelection(0);\n")
+                    onCreate.append("%s.setSelection(0);\n" % variableName)
                     onItemSelected.append("public class %sSelectedListener implements OnItemSelectedListener {\n" % variableName)
                     onItemSelected.append("public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {\n")
                     onItemSelected.append("%sSelected = parent.getItemAtPosition(pos).toString();}\n" % variableName)
                     onItemSelected.append("public void onNothingSelected(AdapterView<?> parent) {\n //Do Nothing \n}\n}")
                     hasSpinner = True
+                elif elem.tag == "ToggleButton":
+                  variableDefinition.append("ToggleButton %s;\n" % variableName)
+                  onCreate.append("%s = (ToggleButton) this.findViewById(R.id.%s);\n" % (variableName, elementId))
+                  onCreate.append("%s.setOnClickListener(this);\n\n" % variableName)
+                  onClick.append("case R.id.%s:\n" % elementId)
+                  onClick.append("break;\n\n")
+                  hasButton = True
             
             except Exception as detail:
                 print "Error: %s-%s - %s" %  (elem.tag, identifier, detail)
