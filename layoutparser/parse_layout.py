@@ -15,6 +15,7 @@ onClick.append("public void onClick(View v) {\n")
 onClick.append("switch (v.getId()) {\n")
 onItemSelected=[]
 
+#Values to determie if we need to build out those sections.
 hasButton = False
 hasSpinner = False
 
@@ -62,7 +63,7 @@ for action,elem in context:
                     variableDefinition.append("Spinner %s;\n" % variableName)
                     variableDefinition.append("String %sSelected;\n" % variableName)
                     onCreate.append("%s = (Spinner) this.findViewById(R.id.%s);\n" % (variableName, elementId))
-                    onCreate.append("ArrayAdapter<CharSequence> %sAdapter = ArrayAdapter.createFromResource(this ,R.array.#BK, android.R.layout.simple_spinner_dropdown_item);\n" % variableName)
+                    onCreate.append("ArrayAdapter<CharSequence> %sAdapter = ArrayAdapter.createFromResource(this ,R.array.#BK, android.R.layout.simple_spinner_item);\n" % variableName)
                     onCreate.append("%s.setAdapter(%sAdapter);\n"%(variableName,variableName))
                     onCreate.append("%s.setOnItemSelectedListener(new %sSelectedListener());\n\n" % (variableName, variableName))
                     onCreate.append("%s.setSelection(0);\n" % variableName)
